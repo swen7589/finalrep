@@ -80,6 +80,31 @@ def root():
     con = sqlite3.connect(args.db_file)
     print_debug_info()
 
+    messages = []
+    sql = 'select sender_id,message,created_at from messages order by created_at desc;'
+    cur_messages = con.cursor()
+    cur_messages.execute(sql)
+    for row_messages in cur_messages.fetchall():
+
+        # get the username/age from sender_id
+        sql='select username,age from users where id='+str(row_messages[0])+';'
+        cur_users = con.cursor()
+        cur_users.execute(sql)
+        for row_users in cur_users.fetchall():
+            pass
+
+        # build the message dictionary
+        messages.append({
+            'message': row_messages[1],
+            'created_at': row_messages[2],
+            'username': row_users[0],
+            'age': row_users[1]
+            })
+
+    # render the jinja2 template and pass the result to firefox
+    return render_template('root.html', messages=messages)
+    
+"""
     # modify the behavior of this route depending on whether the user is logged in
 
     username = request.cookies.get('username')
@@ -87,7 +112,7 @@ def root():
     is_logged_in = is_valid_login(con, username, password)
 
     return render_template('root.html', is_logged_in=is_logged_in)
-
+"""
 
 @app.route('/login', methods=['GET','POST'])
 def login():

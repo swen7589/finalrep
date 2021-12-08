@@ -1,29 +1,21 @@
 {% extends 'base.html' %}
 
 {% block title %}
-
-<h2> MAIN SCREEN </h2>
-
+<h2>HOME</h2>
 {% endblock %}
 
 {% block content %}
-
-<table border=3>
-
-    <tr><th>sender (age)</th></tr><th>message</th><th>created_at</th>
-
+<table>
+    <tr><th>sender (age)</th><th>message</th><th>created_at</th></tr>
+    {% for message in messages %}
     <tr>
-        <td>Kristen (18)</td>
-        <td>lol im losing my mind</td>
-        <td>2021 - 12 - 02 00:41:10</td>
+        <td>{{message['username']}} ({{message['age']}})</td>
+        <td>{{message['message']}}</td>
+        <td>{{message['created_at']}}</td>
     </tr>
-
-    <tr>
-        <td>Edward (80)</td>
-        <td>lol this will be the death of me</td>
-        <td>2021 - 12 - 02 00:41:10</td>
-    </tr>
-
+    {% endfor %}
 </table>
 
+<img src=/static/twitter-violet.png >
 {% endblock %}
+
