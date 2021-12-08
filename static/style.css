@@ -1,16 +1,21 @@
 body {
     padding: 0px;
     margin: 0px;
-    width: 500px;
-    text-align: center;
+    width: 1000px;
+    text-align: left;
 }
 
 ul {
   list-style-type: none;
   margin: 0;
-  padding: 0;
+  padding: 10px;
   overflow: hidden;
-  background-color:cornsilk;
+  background-color:ghostwhite;
+}
+
+img {
+  max-width:25%;
+  height:auto;
 }
 
 li {
@@ -18,9 +23,10 @@ li {
 }
 
 li a {
-  display: block;
-  color:floralwhite;
-  text-align: center;
+  display:inline-block;
+  color:plum;
+  padding: 25px;
+  text-align: left;
 }
 
 /* Change the link color to #111 (black) on hover */

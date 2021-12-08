@@ -4,15 +4,16 @@
         <link rel="stylesheet" href="/static/style.css"> 
     </head>
     <body>
-        <h1>Twitter Clone</h1>
+        <img src=/static/twitter-violet.png>
+        <h1>Mini Twitter</h1>
         <ul>
             <li><a href='/'>home</a></li>
             {% if is_logged_in %}
             <li><a href='/logout'>logout</a></li>
-            <li><a href='/message'>message</a></li>
+            <li><a href='/message'>create message</a></li>
             {% else %}
             <li><a href='/login'>login</a></li>
-            <li><a href='/user'>user</a></li>
+            <li><a href='/user'>create user</a></li>
             {% endif %}
         </ul>
         <main>
