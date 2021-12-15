@@ -225,6 +225,73 @@ def message():
         
         return res
     
+@app.route('/edit_message/<id>', methods=['get', 'post'])
+def edit_message(id):
+    if request.form.get('edit_message'):
+        message = request.form.get('edit_message')
+        con = sqlite3.connect('twitter_clone.db')
+        cur = con.cursor()
+        
+        if len(message) == 0:
+            edit_message_successful = False
+        
+        else:
+            edit_message_successful = True
+            con = sqlite3.connect('twitter_clone.db')
+            con.cursor()
+            sql = """
+                    UPDATE messages SET message=? WHERE id=?;
+                """
+            cur.execute(sql, (id, message,))
+            con.commit()
+        
+        if edit_message_successful:
+            res = make_response(render_template(
+                'edit_message.html',
+                edit_message_successful=True,
+                username=request.cookies.get('username'),
+                password=request.cookies.get('password'),
+                message=request.form.get('edit_message')
+            ))
+            return res
+        
+        else:
+            return render_template(
+                'edit_message.html',
+                username=request.cookies.get('username'),
+                password=request.cookies.get('password'),
+                edit_message_unsuccessful=True
+            )
+    
+    else:
+        res = make_response(render_template(
+            'edit_message.html',
+            username=request.cookies.get('username'),
+            password=request.cookies.get('password'),
+        ))
+        return res
+
+@app.route('/delete_message/<id>')
+def delete_message(id):
+    con = sqlite3.connect('twitter_clone.db')
+    cur = con.cursor()
+    
+    if logged_in(
+        cur=cur,
+        username=request.cookies.get('username'),
+        password=request.cookies.get('password'),
+    ):
+        sql = """
+        DELETE FROM messages WHERE id=?;
+        """
+        cur.execute(sql, (id,))
+        con.commit()
+        res = make_response(render_template(
+            'delete_message.html',
+            username=request.cookies.get('username'),
+            password=request.cookies.get('password'),
+            ))
+        return res
 
 @app.route('/user', methods=['GET','POST'])     
 def user():
