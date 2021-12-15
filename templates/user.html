@@ -1,5 +1,53 @@
 {% extends 'base.html' %}
 
-{% block title %}
-<h2> CREATE USER SCREEN </h2>
+{% block content %}
+
+        {% if create_user_unsuccessful %}
+        <div class="alert alert-danger" role="alert">
+            <p>USERNAME AND/OR PASSWORD MUST BE AT LEAST A LETTER.</p>
+        </div>
+        {% endif %}
+
+        {% if create_user_successful %}
+        <div class="alert alert-success" role="alert">
+            <p>ACCOUNT MADE. LOG IN NOW.</p>
+        </div>
+        {% endif %}
+
+        {% if length_error %}
+        <div class="alert alert-danger" role="alert">
+            <p>NOT LONG ENOUGH. TRY AGAIN.</p>
+        </div>
+        {% endif %}
+
+        {% if username_error %}
+        <div class="alert alert-danger" role="alert">
+            <p>USERNAME ALREADY EXISTS. USE A DIFFERENT USERNAME.</p>
+        </div>
+        {% endif %}
+
+        {% if password_error %}
+        <div class="alert alert-danger" role="alert">
+            <p>PASSWORDS DO NOT MATCH. TRY AGAIN.</p>
+        </div>
+        {% endif %}
+
+
+        <div class="container d-flex justify-content-center">
+            <h2>CREATE USER</h2>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="container-fluid d-flex justify-content-center">
+            <form action=/create_user method=POST>
+                <label for="username">Username:</label><input type=text name=username><br>
+                <label for="password">Password:</label><input type=password name=password><br>
+                <label for="repeatpassword">Confirm Password:</label><input type=password name=repeatpassword><br>
+                <label for="age">Age:</label><input type=integer name=age><br>
+                <input type=submit value='Create Account'>
+            </form>
+        </div>
+
 {% endblock %}
