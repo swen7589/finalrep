@@ -116,7 +116,7 @@ def root():
 
 @app.route('/login', methods=['GET','POST'])
 def login():
-    con = sqlite3.connect(args.db_file)
+    con = sqlite3.connect(twitter_clone.db)
     print_debug_info()
 
     # the basic idea:
@@ -164,17 +164,158 @@ def logout():
     return response
     
 
-@app.route('/message')     
+@app.route('/message', methods=['GET','POST'])     
 def message():
-    print_debug_info()
-    return render_template('message.html')
+    if request.form.get('message'):
+        con = sqlite3.connect('twitter_clone.db')
+        cur = con.cursor()
+        sql = """
+            SELECT id, username FROM users;
+        """
+        cur.execute(sql)
+        rows = cur.fetchall()
+        
+        for row in rows:
+            if row[1] == request.cookies.get('username'):
+                sender_id = row[0]
+            print(row)
+        
+        message = request.form.get('message')
+        
+        con = sqlite3.connect('twitter_clonee.db')
+        cur = con.cursor()
+        
+        sql = """
+        INSERT INTO messages (sender_id, message) VALUES (?, ?);
+        """
+        cur.execute(sql, (sender_id, message,))
+        con.commit()
+        
+        if len(message) == 0:
+            message_success = False
+        
+        else:
+            message_success = True
+
+        if message_success:
+            res = make_response(render_template(
+                'message.html',
+                message_success=True,
+                username=request.cookies.get('username'),
+                password=request.cookies.get('password'),
+                message=request.form.get('message')
+            ))
+            return res
+        
+        else:
+            return render_template(
+                'message.html',
+                username=request.cookies.get('username'),
+                password=request.cookies.get('password'),
+                message_unsuccessful=True
+            )
+    
+    else:
+        res = make_response(render_template(
+            'message.html',
+            username=request.cookies.get('username'),
+            password=request.cookies.get('password'),
+            message_default=True
+        ))
+        
+        return res
     
 
-@app.route('/user')     
+@app.route('/user', methods=['GET','POST'])     
 def user():
-    print_debug_info()
-    return render_template('user.html')
+    if request.method == 'GET':
+        return render_template('user.html')
     
+    con = sqlite3.connect('twitter_clone.db')
+    cur = con.cursor()
+   
+    username = request.form.get('username')
+    password = request.form.get('password')
+    repeatpassword = request.form.get('repeatpassword')
+    age = request.form.get('age')
+   
+    if password == repeatpassword:
+        if len(username) == 0:
+            user_success = False
+            length_error = True
+            
+            if length_error and user_success == False:
+                res = make_response(render_template(
+                    'user.html',
+                    password_error=True
+                ))
+                return res
+        
+        elif len(password) == 0:
+            user_success = False
+            length_error = True
+            
+            if length_error and user_success == False:
+                res = make_response(render_template(
+                    'user.html',
+                    length_error=True
+                ))
+                return res
+        
+        elif len(age) == 0:
+            user_success = False
+            length_error = True
+            
+            if length_error and user_success == False:
+                res = make_response(render_template(
+                    'user.html',
+                    length_error=True
+                ))
+                return res
+        
+        else:
+            user_success = True
+            
+            if len(username) != 0 and len(password) != 0 and len(age) != 0:
+                
+                try:
+                    sql = """
+                    INSERT into users (username, password, age) values (?, ?, ?);
+                    """
+                    cur.execute(sql, (username, password, age))
+                    con.commit()
+
+                except sqlite3.IntegrityError:
+                    username_error = True
+                    if username_error:
+                        res = make_response(render_template(
+                            'user.html',
+                            username_error=True
+                        ))
+                        return res
+                
+                if user_success:
+                    res = make_response(render_template(
+                        'user.html',
+                        user_success=True,
+                    ))
+                    return res
+                
+                else:
+                    return render_template(
+                        'user.html',
+                        user_unsuccessful=True
+                    )
+    
+    else:
+        password_error = True
+        
+        if password_error:
+            res = make_response(render_template(
+                'create_user.html',
+                password_error=True
+            ))
+            return res
 
 ########################################
 # boilerplate
