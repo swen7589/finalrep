@@ -1,5 +1,32 @@
 {% extends 'base.html' %}
 
-{% block title %}
-<h2> CREATE MESSAGE SCREEN </h2>
+{% block content %}
+
+        {% if message_successful %}
+        <div class="alert alert-success" role="alert">
+            The message has been created.
+        </div>
+        {% endif %}
+
+        {% if message_unsuccessful %}
+        <div class="alert alert-danger" role="alert">
+            The message was not created.
+        </div>
+        {% endif %}
+
+        <div class="container d-flex justify-content-center">
+            <h2>CREATE MESSAGE</h2>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="container d-flex justify-content-center">
+            <form action="/create_message" method="POST">
+                <label for="message">Message:</label>
+                <input type="text" name="message">
+                <input type=submit value="Create Message">
+            </form>
+        </div>
+
 {% endblock %}
