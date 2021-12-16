@@ -4,7 +4,8 @@ import requests
 # Copy/paste the implementation of the `is_server_at_ip` function
 # from the lab instructions below.
 
-
+r = requests.get('http://kcna.kp')
+print('r.status_code=', r.status_code)
 
 # FIXME 1:
 # Create a list of all the IP addresses assigned to the DPRK.
