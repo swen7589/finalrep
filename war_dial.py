@@ -1,4 +1,5 @@
 import requests
+import ipaddress
 
 # FIXME 0:
 # Copy/paste the implementation of the `is_server_at_ip` function
@@ -21,11 +22,29 @@ def is_server_at_ip(ip):
 # These IP addresses should be represented as python strings.
 # It is possible to do this using either a 1-line list comprehension or a multi-line for loop.
 
+start_ip = ipaddress.IPv4Address('175.45.176.0')
+end_ip = ipaddress.IPv4Address('175.45.179.255')
 
+ip_accumulator = []
+
+for ip in range(int(start_ip), int(end_ip)):
+    ip_accumulator.append(ip)
+    # print(ip_accumulator)
 
 # FIXME 2:
 # Create a list of all IP addresses in dprk_ips that have a server at them.
 # Print this list of IPs to the screen.
+
+ip_server_accumulator = []
+
+for i in ip_accumulator:
+
+    is_server_at_ip(ip)
+
+    if is_server_at_ip(ip) == True:
+        ip_server_accumulator.append(ip)
+
+print(ip_server_accumulator)
 
 # HINT:
 # There are 1024 IPs that you must scan,
