@@ -4,8 +4,16 @@ import requests
 # Copy/paste the implementation of the `is_server_at_ip` function
 # from the lab instructions below.
 
-r = requests.get('http://kcna.kp')
-print('r.status_code=', r.status_code)
+def is_server_at_ip(ip):
+    '''
+    returns `True` if a server exists at the input IP address;
+    otherwise returns `False`
+    '''
+    try:
+        r = requests.get('http://'+ip, headers={'host': 'this can be anything :)'})
+        return True
+    except requests.exceptions.ConnectTimeout:
+        return False
 
 # FIXME 1:
 # Create a list of all the IP addresses assigned to the DPRK.
