@@ -12,6 +12,7 @@ def is_server_at_ip(ip):
     '''
     try:
         r = requests.get('http://'+str(ip), headers={'host': 'this can be anything :)'})
+        print('trying')
         return True
     except requests.exceptions.ConnectTimeout:
         return False
@@ -78,4 +79,3 @@ print(dprk_ips)
 # you can restart your code from that IP to finish the scan.
 # In your final submission to sakai, you'll have to concatenate the found IPs from both runs together when uploading the list of IPs.
 
-print('trying')
