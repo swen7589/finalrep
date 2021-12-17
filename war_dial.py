@@ -11,7 +11,7 @@ def is_server_at_ip(ip):
     otherwise returns `False`
     '''
     try:
-        r = requests.get('http://'+ip, headers={'host': 'this can be anything :)'})
+        r = requests.get('http://'+str(ip), headers={'host': 'this can be anything :)'})
         return True
     except requests.exceptions.ConnectTimeout:
         return False
@@ -22,29 +22,33 @@ def is_server_at_ip(ip):
 # These IP addresses should be represented as python strings.
 # It is possible to do this using either a 1-line list comprehension or a multi-line for loop.
 
-start_ip = ipaddress.IPv4Address('175.45.176.0')
-end_ip = ipaddress.IPv4Address('175.45.179.255')
-
 ip_accumulator = []
 
-for ip in range(int(start_ip), int(end_ip)):
-    ip_accumulator.append(ip)
-    # print(ip_accumulator)
+for i in range(176, 180):
+    for j in range (0,256):
+        new_ip = '175.45.' + str(i) + '.' + str(j)
+        ip_accumulator.append(new_ip)
+
+# print(ip_accumulator)
 
 # FIXME 2:
 # Create a list of all IP addresses in dprk_ips that have a server at them.
 # Print this list of IPs to the screen.
 
-ip_server_accumulator = []
+
+dprk_ips = []
 
 for i in ip_accumulator:
+    if is_server_at_ip(i):
+        dprk_ips.append(i)
 
-    is_server_at_ip(ip)
-
+print(dprk_ips)
+'''
     if is_server_at_ip(ip) == True:
         ip_server_accumulator.append(ip)
+'''
 
-print(ip_server_accumulator)
+
 
 # HINT:
 # There are 1024 IPs that you must scan,
@@ -73,3 +77,5 @@ print(ip_server_accumulator)
 # If you have an error message on the 500th IP, for example,
 # you can restart your code from that IP to finish the scan.
 # In your final submission to sakai, you'll have to concatenate the found IPs from both runs together when uploading the list of IPs.
+
+print('trying')
