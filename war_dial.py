@@ -11,7 +11,7 @@ def is_server_at_ip(ip):
     otherwise returns `False`
     '''
     try:
-        r = requests.get('http://'+str(ip), headers={'host': 'this can be anything :)'})
+        r = requests.get('http://'+str(ip), headers={'host': 'this can be anything :)'}, timeout=5, allow_redirects=False)
         print('trying')
         return True
     except requests.exceptions.ConnectTimeout:
@@ -42,6 +42,7 @@ dprk_ips = []
 for i in ip_accumulator:
     if is_server_at_ip(i):
         dprk_ips.append(i)
+        print('dont worry im alive')
 
 print(dprk_ips)
 '''
